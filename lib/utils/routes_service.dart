@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:talenavi_movie/features/movie/domain/entities/movie.dart';
+import 'package:talenavi_movie/features/movie/presentation/screen/form_screen.dart';
 
 import '../features/movie/presentation/screen/home_screen.dart';
 
@@ -28,6 +30,17 @@ class RoutesService {
         name: 'home',
         pageBuilder: (context, state) =>
             _buildPageWithDefaultTransition(child: const HomeScreen()),
+        routes: [
+          GoRoute(
+            path: 'form',
+            name: 'form',
+            pageBuilder: (context, state) => _buildPageWithDefaultTransition(
+              child: FormScreen(
+                movie: state.extra as Movie?,
+              ),
+            ),
+          )
+        ],
       )
     ],
   );

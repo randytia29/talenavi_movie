@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:talenavi_movie/features/movie/domain/entities/movie.dart';
 import 'package:talenavi_movie/features/movie/presentation/widget/movie_card.dart';
 import 'package:talenavi_movie/theme_manager/space_manager.dart';
@@ -35,7 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          GoRouter.of(context).goNamed('form');
+        },
         child: const Icon(Icons.add),
       ),
       body: Padding(
