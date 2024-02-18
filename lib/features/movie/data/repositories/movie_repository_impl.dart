@@ -17,7 +17,7 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await localDataSource.saveMovie(movie);
       return Right(result);
     } on DatabaseException catch (e) {
-      return Left(DatabaseFailure(e.message));
+      return Left(DatabaseFailure(e.toString()));
     }
   }
 

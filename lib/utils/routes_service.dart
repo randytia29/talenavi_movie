@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:go_router/go_router.dart';
 
-import '../features/home/presentation/screen/home_screen.dart';
+import '../features/movie/presentation/screen/home_screen.dart';
 
 class RoutesService {
   static CustomTransitionPage _buildPageWithDefaultTransition(

@@ -36,8 +36,8 @@ class DatabaseHelper {
       CREATE TABLE  $_tblWatchlist (
         id INTEGER PRIMARY KEY,
         title TEXT,
-        overview TEXT,
-        posterPath TEXT
+        director TEXT,
+        summary TEXT
       );
     ''');
 
