@@ -24,3 +24,7 @@ class TlsFailure extends Failure {
 class CommonFailure extends Failure {
   const CommonFailure(super.message);
 }
+
+class DatabaseFailure extends Failure {
+  const DatabaseFailure(super.message);
+}
