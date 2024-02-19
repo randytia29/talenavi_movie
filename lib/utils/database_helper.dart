@@ -19,9 +19,7 @@ class DatabaseHelper {
     return _database;
   }
 
-  static const String _tblWatchlist = 'watchlist';
-
-  static const String _tblWatchtvserieslist = 'watchtvserieslist';
+  static const String _tblMovie = 'movie';
 
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();
@@ -33,33 +31,30 @@ class DatabaseHelper {
 
   void _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE  $_tblWatchlist (
+      CREATE TABLE  $_tblMovie (
         id INTEGER PRIMARY KEY,
         title TEXT,
         director TEXT,
-        summary TEXT
-      );
-    ''');
-
-    await db.execute('''
-      CREATE TABLE  $_tblWatchtvserieslist (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        overview TEXT,
-        posterPath TEXT
+        summary TEXT,
+        genres TEXT
       );
     ''');
   }
 
-  Future<int> insertWatchlist(MovieModel movie) async {
+  Future<int> insertMovie(MovieModel movie) async {
     final db = await database;
-    return await db!.insert(_tblWatchlist, movie.toJson());
+
+    if (db == null) {
+      return 0;
+    }
+
+    return await db.insert(_tblMovie, movie.toJson());
   }
 
   Future<int> removeWatchlist(Movie movie) async {
     final db = await database;
     return await db!.delete(
-      _tblWatchlist,
+      _tblMovie,
       where: 'id = ?',
       whereArgs: [movie.id],
     );
@@ -68,7 +63,7 @@ class DatabaseHelper {
   Future<Map<String, dynamic>?> getMovieById(int id) async {
     final db = await database;
     final results = await db!.query(
-      _tblWatchlist,
+      _tblMovie,
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -80,10 +75,13 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getWatchlistMovies() async {
+  Future<List<Map<String, dynamic>>> getMovies() async {
     final db = await database;
-    final List<Map<String, dynamic>> results = await db!.query(_tblWatchlist);
 
-    return results;
+    if (db == null) {
+      return [];
+    }
+
+    return await db.query(_tblMovie);
   }
 }

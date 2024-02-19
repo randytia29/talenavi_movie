@@ -5,6 +5,7 @@ import '../../../../utils/database_helper.dart';
 
 abstract class MovieLocalDataSource {
   Future<String> saveMovie(MovieModel movie);
+  Future<List<MovieModel>> getMovie();
 }
 
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
@@ -51,8 +52,20 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   @override
   Future<String> saveMovie(MovieModel movie) async {
     try {
-      await databaseHelper.insertWatchlist(movie);
-      return 'Added to Watchlist';
+      await databaseHelper.insertMovie(movie);
+      return 'Movie added';
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<MovieModel>> getMovie() async {
+    try {
+      final data = await databaseHelper.getMovies();
+      final movies = data.map((e) => MovieModel.fromJson(e)).toList();
+
+      return movies;
     } catch (e) {
       throw DatabaseException(e.toString());
     }

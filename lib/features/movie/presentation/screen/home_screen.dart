@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:talenavi_movie/features/movie/domain/entities/movie.dart';
-import 'package:talenavi_movie/features/movie/presentation/widget/movie_card.dart';
+import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dart';
 import 'package:talenavi_movie/theme_manager/space_manager.dart';
 
 import '../widget/search_text_field.dart';
@@ -20,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+
+    context.read<MovieCubit>().fetchMovie();
   }
 
   @override
@@ -48,12 +50,26 @@ class _HomeScreenState extends State<HomeScreen> {
             16.0.spaceY,
             SearchTextField(controller: _searchController),
             16.0.spaceY,
-            const MovieCard(
-              movie: Movie(
-                title: 'Power ranger',
-                director: 'Dean',
-                genres: ['Action', 'Animation'],
-              ),
+            BlocBuilder<MovieCubit, MovieState>(
+              builder: (context, movieState) {
+                if (movieState is MovieLoading) {
+                  return const CircularProgressIndicator();
+                }
+
+                if (movieState is MovieLoaded) {
+                  return Text(movieState.movies.length.toString());
+                }
+
+                return Container();
+
+                // return MovieCard(
+                //   movie: Movie(
+                //     title: 'Power ranger',
+                //     director: 'Dean',
+                //     genres: 'Action,Animation',
+                //   ),
+                // );
+              },
             )
           ],
         ),

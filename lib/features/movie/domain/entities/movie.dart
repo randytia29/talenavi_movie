@@ -4,8 +4,8 @@ class Movie extends Equatable {
   final int? id;
   final String? title;
   final String? director;
-  final bool? summary;
-  final List<String>? genres;
+  final String? summary;
+  final String? genres;
 
   const Movie({
     this.id,

@@ -14,9 +14,7 @@ class MovieModel extends Movie {
         title: json["title"],
         director: json["director"],
         summary: json["summary"],
-        genres: json["genres"] == null
-            ? []
-            : List<String>.from(json["genres"]!.map((x) => x)),
+        genres: json["genres"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -24,7 +22,6 @@ class MovieModel extends Movie {
         "title": title,
         "director": director,
         "summary": summary,
-        "genres":
-            genres == null ? [] : List<dynamic>.from(genres!.map((x) => x)),
+        "genres": genres,
       };
 }

@@ -38,11 +38,11 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  String convertGenres(List<String>? genres) {
+  String convertGenres(String? genres) {
     if (genres == null) {
       return '';
     }
 
-    return genres.join(' / ');
+    return genres.replaceFirst(',', ' / ');
   }
 }
