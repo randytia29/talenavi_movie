@@ -20,7 +20,13 @@ class MovieList extends StatelessWidget {
           itemBuilder: (_, index) {
             final movie = movies[index];
 
-            return MovieCard(movie: movie);
+            return Padding(
+              padding: EdgeInsets.only(
+                top: index == 0 ? 16 : 0,
+                bottom: index == movies.length - 1 ? 16 : 0,
+              ),
+              child: MovieCard(movie: movie),
+            );
           },
           separatorBuilder: (_, index) => 16.0.spaceY,
           itemCount: movies.length,
