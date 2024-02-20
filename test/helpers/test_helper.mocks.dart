@@ -8,6 +8,7 @@ import 'dart:async' as _i4;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:sqflite/sqflite.dart' as _i10;
 import 'package:talenavi_movie/core/failure/failure.dart' as _i5;
 import 'package:talenavi_movie/features/movie/data/datasources/movie_local_data_source.dart'
     as _i7;
@@ -15,6 +16,7 @@ import 'package:talenavi_movie/features/movie/data/models/movie_model.dart'
     as _i6;
 import 'package:talenavi_movie/features/movie/domain/repositories/movie_repository.dart'
     as _i3;
+import 'package:talenavi_movie/utils/database_helper.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -183,4 +185,57 @@ class MockMovieLocalDataSource extends _i1.Mock
           ),
         )),
       ) as _i4.Future<String>);
+}
+
+/// A class which mocks [DatabaseHelper].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDatabaseHelper extends _i1.Mock implements _i9.DatabaseHelper {
+  MockDatabaseHelper() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i10.Database?> get database => (super.noSuchMethod(
+        Invocation.getter(#database),
+        returnValue: _i4.Future<_i10.Database?>.value(),
+      ) as _i4.Future<_i10.Database?>);
+
+  @override
+  _i4.Future<int> insertMovie(_i6.MovieModel? movie) => (super.noSuchMethod(
+        Invocation.method(
+          #insertMovie,
+          [movie],
+        ),
+        returnValue: _i4.Future<int>.value(0),
+      ) as _i4.Future<int>);
+
+  @override
+  _i4.Future<int> removeMovie(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #removeMovie,
+          [id],
+        ),
+        returnValue: _i4.Future<int>.value(0),
+      ) as _i4.Future<int>);
+
+  @override
+  _i4.Future<int> updateMovie(_i6.MovieModel? movie) => (super.noSuchMethod(
+        Invocation.method(
+          #updateMovie,
+          [movie],
+        ),
+        returnValue: _i4.Future<int>.value(0),
+      ) as _i4.Future<int>);
+
+  @override
+  _i4.Future<List<Map<String, dynamic>>> getMovies(String? keyword) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getMovies,
+          [keyword],
+        ),
+        returnValue: _i4.Future<List<Map<String, dynamic>>>.value(
+            <Map<String, dynamic>>[]),
+      ) as _i4.Future<List<Map<String, dynamic>>>);
 }
