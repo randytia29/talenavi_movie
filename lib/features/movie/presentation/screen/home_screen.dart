@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dart';
 import 'package:talenavi_movie/theme_manager/space_manager.dart';
 
+import '../widget/movie_list.dart';
 import '../widget/search_text_field.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,26 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
             16.0.spaceY,
             SearchTextField(controller: _searchController),
             16.0.spaceY,
-            BlocBuilder<MovieCubit, MovieState>(
-              builder: (context, movieState) {
-                if (movieState is MovieLoading) {
-                  return const CircularProgressIndicator();
-                }
-
-                if (movieState is MovieLoaded) {
-                  return Text(movieState.movies.length.toString());
-                }
-
-                return Container();
-
-                // return MovieCard(
-                //   movie: Movie(
-                //     title: 'Power ranger',
-                //     director: 'Dean',
-                //     genres: 'Action,Animation',
-                //   ),
-                // );
-              },
+            const Expanded(
+              child: MovieList(),
             )
           ],
         ),

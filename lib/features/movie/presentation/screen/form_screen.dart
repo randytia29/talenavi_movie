@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:talenavi_movie/common_enum/enum_genre.dart';
 import 'package:talenavi_movie/features/movie/data/models/movie_model.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/add_movie_cubit.dart';
+import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/widget/custom_text_field.dart';
 import 'package:talenavi_movie/sl.dart';
 import 'package:talenavi_movie/theme_manager/space_manager.dart';
@@ -54,16 +55,28 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => _addMovieCubit,
-      child: BlocListener<AddMovieCubit, AddMovieState>(
-        listener: (context, state) {
-          if (state is AddMovieFailed) {
-            log(state.message);
-          }
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AddMovieCubit, AddMovieState>(
+            listener: (context, state) {
+              if (state is AddMovieFailed) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.message)));
+              }
 
-          if (state is AddMovieSuccess) {
-            GoRouter.of(context).pop();
-          }
-        },
+              if (state is AddMovieSuccess) {
+                context.read<MovieCubit>().fetchMovie();
+              }
+            },
+          ),
+          BlocListener<MovieCubit, MovieState>(
+            listener: (context, state) {
+              if (state is MovieLoaded) {
+                GoRouter.of(context).pop();
+              }
+            },
+          ),
+        ],
         child: Scaffold(
           appBar: AppBar(
             actions: [
@@ -82,17 +95,18 @@ class _FormScreenState extends State<FormScreen> {
                         selectedGenres.isNotEmpty) {
                       _addMovieCubit.startSaveMovie(
                         MovieModel(
-                          id: 1,
+                          id: Random().nextInt(100),
                           title: _titleController.text,
                           director: _directorController.text,
                           summary: _summaryController.text,
                           genres: convertGenreString(selectedGenres),
                         ),
                       );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Lengkapi isian')));
                     }
-                  } else {
-                    log('message');
-                  }
+                  } else {}
                 },
                 icon: const Icon(Icons.save),
               )
