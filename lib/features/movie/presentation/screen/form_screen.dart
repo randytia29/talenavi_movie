@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:talenavi_movie/common_enum/enum_genre.dart';
 import 'package:talenavi_movie/features/movie/data/models/movie_model.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/add_movie_cubit.dart';
+import 'package:talenavi_movie/features/movie/presentation/cubit/delete_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/widget/custom_text_field.dart';
 import 'package:talenavi_movie/sl.dart';
@@ -28,6 +29,7 @@ class _FormScreenState extends State<FormScreen> {
   late TextEditingController _summaryController;
 
   late AddMovieCubit _addMovieCubit;
+  late DeleteMovieCubit _deleteMovieCubit;
 
   List<String> selectedGenres = [];
 
@@ -47,6 +49,7 @@ class _FormScreenState extends State<FormScreen> {
     }
 
     _addMovieCubit = sl<AddMovieCubit>();
+    _deleteMovieCubit = sl<DeleteMovieCubit>();
   }
 
   @override
@@ -56,13 +59,21 @@ class _FormScreenState extends State<FormScreen> {
     _summaryController.dispose();
 
     _addMovieCubit.close();
+    _deleteMovieCubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _addMovieCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => _addMovieCubit,
+        ),
+        BlocProvider(
+          create: (context) => _deleteMovieCubit,
+        ),
+      ],
       child: MultiBlocListener(
         listeners: [
           BlocListener<AddMovieCubit, AddMovieState>(
@@ -84,6 +95,13 @@ class _FormScreenState extends State<FormScreen> {
               }
             },
           ),
+          BlocListener<DeleteMovieCubit, DeleteMovieState>(
+            listener: (context, state) {
+              if (state is DeleteMovieSuccess) {
+                context.read<MovieCubit>().fetchMovie();
+              }
+            },
+          ),
         ],
         child: Scaffold(
           appBar: AppBar(
@@ -91,7 +109,8 @@ class _FormScreenState extends State<FormScreen> {
               widget.movie == null
                   ? Container()
                   : IconButton(
-                      onPressed: () {},
+                      onPressed: () => _deleteMovieCubit
+                          .startDeleteMovie(widget.movie?.id ?? 0),
                       icon: const Icon(Icons.delete),
                     ),
               IconButton(

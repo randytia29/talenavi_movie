@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:talenavi_movie/features/movie/data/models/movie_model.dart';
-import 'package:talenavi_movie/features/movie/domain/entities/movie.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper;
@@ -51,13 +50,13 @@ class DatabaseHelper {
     return await db.insert(_tblMovie, movie.toJson());
   }
 
-  Future<int> removeWatchlist(Movie movie) async {
+  Future<int> removeMovie(int id) async {
     final db = await database;
-    return await db!.delete(
-      _tblMovie,
-      where: 'id = ?',
-      whereArgs: [movie.id],
-    );
+
+    if (db == null) {
+      return 0;
+    }
+    return await db.delete(_tblMovie, where: 'id = ?', whereArgs: [id]);
   }
 
   Future<Map<String, dynamic>?> getMovieById(int id) async {

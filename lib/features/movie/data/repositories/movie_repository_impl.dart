@@ -31,6 +31,16 @@ class MovieRepositoryImpl implements MovieRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, String>> deleteMovie(int id) async {
+    try {
+      final result = await localDataSource.deleteMovie(id);
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
+  }
+
   // @override
   // Future<Either<Failure, List<Movie>>> getNowPlayingMovies() async {
   //   try {
