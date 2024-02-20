@@ -9,22 +9,6 @@ abstract class Failure extends Equatable {
   List<Object> get props => [message];
 }
 
-class ServerFailure extends Failure {
-  const ServerFailure(super.message);
-}
-
-class ConnectionFailure extends Failure {
-  const ConnectionFailure(super.message);
-}
-
-class TlsFailure extends Failure {
-  const TlsFailure(super.message);
-}
-
-class CommonFailure extends Failure {
-  const CommonFailure(super.message);
-}
-
 class DatabaseFailure extends Failure {
   const DatabaseFailure(super.message);
 }

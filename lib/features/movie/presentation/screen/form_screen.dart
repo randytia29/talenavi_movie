@@ -11,6 +11,7 @@ import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dar
 import 'package:talenavi_movie/features/movie/presentation/cubit/update_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/widget/custom_text_field.dart';
 import 'package:talenavi_movie/sl.dart';
+import 'package:talenavi_movie/theme_manager/color_manager.dart';
 import 'package:talenavi_movie/theme_manager/space_manager.dart';
 
 import '../../domain/entities/movie.dart';
@@ -122,6 +123,8 @@ class _FormScreenState extends State<FormScreen> {
         ],
         child: Scaffold(
           appBar: AppBar(
+            title: const Text('Form'),
+            centerTitle: true,
             actions: [
               widget.movie == null
                   ? Container()
@@ -159,7 +162,7 @@ class _FormScreenState extends State<FormScreen> {
                     }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Lengkapi isian')));
+                        const SnackBar(content: Text('Lengkapi form isian')));
                   }
                 },
                 icon: const Icon(Icons.save),
@@ -218,6 +221,7 @@ class _FormScreenState extends State<FormScreen> {
                                 color: convertColor(selectedGenres, e),
                               ),
                               borderRadius: BorderRadius.circular(16),
+                              color: convertBackgroundColor(selectedGenres, e),
                             ),
                             child: Text(e.value),
                           ),
@@ -245,9 +249,17 @@ class _FormScreenState extends State<FormScreen> {
 
   Color convertColor(List<String> selectedGenres, GenreType genre) {
     if (selectedGenres.contains(genre.value)) {
-      return Colors.red;
+      return ColorManager.primary;
     }
 
     return Colors.black;
+  }
+
+  Color? convertBackgroundColor(List<String> selectedGenres, GenreType genre) {
+    if (selectedGenres.contains(genre.value)) {
+      return Theme.of(context).colorScheme.inversePrimary;
+    }
+
+    return null;
   }
 }
