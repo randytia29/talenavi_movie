@@ -41,6 +41,16 @@ class MovieRepositoryImpl implements MovieRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, String>> updateMovie(MovieModel movie) async {
+    try {
+      final result = await localDataSource.updateMovie(movie);
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
+  }
+
   // @override
   // Future<Either<Failure, List<Movie>>> getNowPlayingMovies() async {
   //   try {

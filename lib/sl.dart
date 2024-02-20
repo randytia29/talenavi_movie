@@ -6,9 +6,11 @@ import 'package:talenavi_movie/features/movie/domain/repositories/movie_reposito
 import 'package:talenavi_movie/features/movie/domain/usecases/delete_movie.dart';
 import 'package:talenavi_movie/features/movie/domain/usecases/get_movie.dart';
 import 'package:talenavi_movie/features/movie/domain/usecases/save_movie.dart';
+import 'package:talenavi_movie/features/movie/domain/usecases/update_movie.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/add_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/delete_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dart';
+import 'package:talenavi_movie/features/movie/presentation/cubit/update_movie_cubit.dart';
 import 'package:talenavi_movie/utils/database_helper.dart';
 
 import 'features/home/data/datasources/home_remote_data_source.dart';
@@ -30,12 +32,14 @@ Future<void> init() async {
   sl.registerFactory(() => AddMovieCubit(saveMovie: sl()));
   sl.registerFactory(() => MovieCubit(getMovie: sl()));
   sl.registerFactory(() => DeleteMovieCubit(deleteMovie: sl()));
+  sl.registerFactory(() => UpdateMovieCubit(updateMovie: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetUser(sl()));
   sl.registerLazySingleton(() => SaveMovie(sl()));
   sl.registerLazySingleton(() => GetMovie(sl()));
   sl.registerLazySingleton(() => DeleteMovie(sl()));
+  sl.registerLazySingleton(() => UpdateMovie(sl()));
 
   // Repository
   sl.registerLazySingleton<HomeRepository>(

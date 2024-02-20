@@ -8,6 +8,7 @@ import 'package:talenavi_movie/features/movie/data/models/movie_model.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/add_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/delete_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/cubit/movie_cubit.dart';
+import 'package:talenavi_movie/features/movie/presentation/cubit/update_movie_cubit.dart';
 import 'package:talenavi_movie/features/movie/presentation/widget/custom_text_field.dart';
 import 'package:talenavi_movie/sl.dart';
 import 'package:talenavi_movie/theme_manager/space_manager.dart';
@@ -30,6 +31,7 @@ class _FormScreenState extends State<FormScreen> {
 
   late AddMovieCubit _addMovieCubit;
   late DeleteMovieCubit _deleteMovieCubit;
+  late UpdateMovieCubit _updateMovieCubit;
 
   List<String> selectedGenres = [];
 
@@ -50,6 +52,7 @@ class _FormScreenState extends State<FormScreen> {
 
     _addMovieCubit = sl<AddMovieCubit>();
     _deleteMovieCubit = sl<DeleteMovieCubit>();
+    _updateMovieCubit = sl<UpdateMovieCubit>();
   }
 
   @override
@@ -60,6 +63,7 @@ class _FormScreenState extends State<FormScreen> {
 
     _addMovieCubit.close();
     _deleteMovieCubit.close();
+    _updateMovieCubit.close();
     super.dispose();
   }
 
@@ -73,6 +77,9 @@ class _FormScreenState extends State<FormScreen> {
         BlocProvider(
           create: (context) => _deleteMovieCubit,
         ),
+        BlocProvider(
+          create: (context) => _updateMovieCubit,
+        ),
       ],
       child: MultiBlocListener(
         listeners: [
@@ -84,6 +91,18 @@ class _FormScreenState extends State<FormScreen> {
               }
 
               if (state is AddMovieSuccess) {
+                context.read<MovieCubit>().fetchMovie();
+              }
+            },
+          ),
+          BlocListener<UpdateMovieCubit, UpdateMovieState>(
+            listener: (context, state) {
+              if (state is UpdateMovieFailed) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.message)));
+              }
+
+              if (state is UpdateMovieSuccess) {
                 context.read<MovieCubit>().fetchMovie();
               }
             },
@@ -115,11 +134,11 @@ class _FormScreenState extends State<FormScreen> {
                     ),
               IconButton(
                 onPressed: () {
-                  if (widget.movie == null) {
-                    if (_titleController.text.isNotEmpty &&
-                        _directorController.text.isNotEmpty &&
-                        _summaryController.text.isNotEmpty &&
-                        selectedGenres.isNotEmpty) {
+                  if (_titleController.text.isNotEmpty &&
+                      _directorController.text.isNotEmpty &&
+                      _summaryController.text.isNotEmpty &&
+                      selectedGenres.isNotEmpty) {
+                    if (widget.movie == null) {
                       _addMovieCubit.startSaveMovie(
                         MovieModel(
                           id: Random().nextInt(100),
@@ -130,10 +149,20 @@ class _FormScreenState extends State<FormScreen> {
                         ),
                       );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Lengkapi isian')));
+                      _updateMovieCubit.startUpdateMovie(
+                        MovieModel(
+                          id: widget.movie?.id ?? 0,
+                          title: _titleController.text,
+                          director: _directorController.text,
+                          summary: _summaryController.text,
+                          genres: convertGenreString(selectedGenres),
+                        ),
+                      );
                     }
-                  } else {}
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Lengkapi isian')));
+                  }
                 },
                 icon: const Icon(Icons.save),
               )

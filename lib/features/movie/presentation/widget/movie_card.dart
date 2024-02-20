@@ -47,6 +47,6 @@ class MovieCard extends StatelessWidget {
       return '';
     }
 
-    return genres.replaceFirst(',', ' / ');
+    return genres.replaceAll(',', ' / ');
   }
 }

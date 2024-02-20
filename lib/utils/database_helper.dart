@@ -59,19 +59,15 @@ class DatabaseHelper {
     return await db.delete(_tblMovie, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<Map<String, dynamic>?> getMovieById(int id) async {
+  Future<int> updateMovie(MovieModel movie) async {
     final db = await database;
-    final results = await db!.query(
-      _tblMovie,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
 
-    if (results.isNotEmpty) {
-      return results.first;
-    } else {
-      return null;
+    if (db == null) {
+      return 0;
     }
+
+    return await db.update(_tblMovie, movie.toJson(),
+        where: 'id = ?', whereArgs: [movie.id]);
   }
 
   Future<List<Map<String, dynamic>>> getMovies() async {

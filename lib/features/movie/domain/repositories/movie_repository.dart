@@ -7,4 +7,5 @@ abstract class MovieRepository {
   Future<Either<Failure, String>> saveMovie(MovieModel movie);
   Future<Either<Failure, List<MovieModel>>> getMovie();
   Future<Either<Failure, String>> deleteMovie(int id);
+  Future<Either<Failure, String>> updateMovie(MovieModel movie);
 }

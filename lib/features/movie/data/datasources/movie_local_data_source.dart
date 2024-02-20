@@ -7,6 +7,7 @@ abstract class MovieLocalDataSource {
   Future<String> saveMovie(MovieModel movie);
   Future<List<MovieModel>> getMovie();
   Future<String> deleteMovie(int id);
+  Future<String> updateMovie(MovieModel movie);
 }
 
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
@@ -76,7 +77,17 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   Future<String> deleteMovie(int id) async {
     try {
       await databaseHelper.removeMovie(id);
-      return 'Removed from Watchlist';
+      return 'Movie Removed';
+    } catch (e) {
+      throw DatabaseException(e.toString());
+    }
+  }
+
+  @override
+  Future<String> updateMovie(MovieModel movie) async {
+    try {
+      await databaseHelper.updateMovie(movie);
+      return 'Movie Updated';
     } catch (e) {
       throw DatabaseException(e.toString());
     }
