@@ -14,25 +14,17 @@ class MovieList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MovieCubit, MovieState>(
       builder: (context, movieState) {
-        if (movieState is MovieLoading) {
-          return const CircularProgressIndicator();
-        }
+        final movies = movieState.movies;
 
-        if (movieState is MovieLoaded) {
-          final movies = movieState.movies;
+        return ListView.separated(
+          itemBuilder: (_, index) {
+            final movie = movies[index];
 
-          return ListView.separated(
-            itemBuilder: (_, index) {
-              final movie = movies[index];
-
-              return MovieCard(movie: movie);
-            },
-            separatorBuilder: (_, index) => 16.0.spaceY,
-            itemCount: movies.length,
-          );
-        }
-
-        return Container();
+            return MovieCard(movie: movie);
+          },
+          separatorBuilder: (_, index) => 16.0.spaceY,
+          itemCount: movies.length,
+        );
       },
     );
   }

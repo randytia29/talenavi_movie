@@ -47,7 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             16.0.spaceY,
-            SearchTextField(controller: _searchController),
+            SearchTextField(
+              controller: _searchController,
+              onChanged: (value) =>
+                  context.read<MovieCubit>().fetchMovie(keyword: value),
+            ),
             16.0.spaceY,
             const Expanded(
               child: MovieList(),

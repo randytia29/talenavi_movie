@@ -109,9 +109,7 @@ class _FormScreenState extends State<FormScreen> {
           ),
           BlocListener<MovieCubit, MovieState>(
             listener: (context, state) {
-              if (state is MovieLoaded) {
-                GoRouter.of(context).pop();
-              }
+              GoRouter.of(context).pop();
             },
           ),
           BlocListener<DeleteMovieCubit, DeleteMovieState>(

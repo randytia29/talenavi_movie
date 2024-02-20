@@ -22,16 +22,6 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> getMovie() async {
-    try {
-      final result = await localDataSource.getMovie();
-      return Right(result);
-    } on DatabaseException catch (e) {
-      return Left(DatabaseFailure(e.toString()));
-    }
-  }
-
-  @override
   Future<Either<Failure, String>> deleteMovie(int id) async {
     try {
       final result = await localDataSource.deleteMovie(id);
@@ -45,6 +35,16 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<Either<Failure, String>> updateMovie(MovieModel movie) async {
     try {
       final result = await localDataSource.updateMovie(movie);
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MovieModel>>> getMovie(String keyword) async {
+    try {
+      final result = await localDataSource.getMovie(keyword);
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.toString()));

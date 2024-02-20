@@ -70,13 +70,14 @@ class DatabaseHelper {
         where: 'id = ?', whereArgs: [movie.id]);
   }
 
-  Future<List<Map<String, dynamic>>> getMovies() async {
+  Future<List<Map<String, dynamic>>> getMovies(String keyword) async {
     final db = await database;
 
     if (db == null) {
       return [];
     }
 
-    return await db.query(_tblMovie);
+    return await db
+        .query(_tblMovie, where: 'title LIKE ?', whereArgs: ['%$keyword%']);
   }
 }

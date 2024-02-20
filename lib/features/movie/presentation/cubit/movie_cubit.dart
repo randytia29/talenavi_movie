@@ -11,14 +11,11 @@ class MovieCubit extends Cubit<MovieState> {
 
   MovieCubit({required GetMovie getMovie})
       : _getMovie = getMovie,
-        super(MovieInitial());
+        super(MovieState.initial());
 
-  void fetchMovie() async {
-    emit(MovieLoading());
+  void fetchMovie({String? keyword}) async {
+    final result = await _getMovie(Params(keyword: keyword ?? ''));
 
-    final result = await _getMovie(Params());
-
-    result.fold((l) => emit(MovieFailed(message: l.message)),
-        (r) => emit(MovieLoaded(movies: r)));
+    result.fold((l) => null, (r) => emit(state.movieCopyWith(movies: r)));
   }
 }

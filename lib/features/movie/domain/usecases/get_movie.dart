@@ -12,7 +12,11 @@ class GetMovie implements Usecase<List<MovieModel>, Params> {
 
   @override
   Future<Either<Failure, List<MovieModel>>> call(Params params) async =>
-      await repository.getMovie();
+      await repository.getMovie(params.keyword);
 }
 
-class Params {}
+class Params {
+  final String keyword;
+
+  const Params({required this.keyword});
+}

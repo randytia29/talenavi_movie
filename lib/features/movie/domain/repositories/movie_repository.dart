@@ -5,7 +5,7 @@ import '../../../../core/failure/failure.dart';
 
 abstract class MovieRepository {
   Future<Either<Failure, String>> saveMovie(MovieModel movie);
-  Future<Either<Failure, List<MovieModel>>> getMovie();
+  Future<Either<Failure, List<MovieModel>>> getMovie(String keyword);
   Future<Either<Failure, String>> deleteMovie(int id);
   Future<Either<Failure, String>> updateMovie(MovieModel movie);
 }
