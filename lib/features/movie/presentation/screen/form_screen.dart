@@ -38,6 +38,14 @@ class _FormScreenState extends State<FormScreen> {
     _directorController = TextEditingController();
     _summaryController = TextEditingController();
 
+    if (widget.movie != null) {
+      _titleController.text = widget.movie?.title ?? '';
+      _directorController.text = widget.movie?.director ?? '';
+      _summaryController.text = widget.movie?.summary ?? '';
+
+      selectedGenres = convertGenresList(widget.movie?.genres);
+    }
+
     _addMovieCubit = sl<AddMovieCubit>();
   }
 
@@ -180,6 +188,14 @@ class _FormScreenState extends State<FormScreen> {
   }
 
   String convertGenreString(List<String> genres) => genres.join(',');
+
+  List<String> convertGenresList(String? genres) {
+    if (genres == null) {
+      return [];
+    }
+
+    return genres.split(',');
+  }
 
   Color convertColor(List<String> selectedGenres, GenreType genre) {
     if (selectedGenres.contains(genre.value)) {

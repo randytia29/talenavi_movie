@@ -39,9 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          GoRouter.of(context).goNamed('form');
-        },
+        onPressed: () => GoRouter.of(context).goNamed('form'),
         child: const Icon(Icons.add),
       ),
       body: Padding(
